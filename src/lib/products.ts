@@ -33,7 +33,7 @@ export const products: Product[] = [
     name: "Shadow Runner",
     price: 6.99,
     category: "Exotic",
-    image: "https://images.unsplash.com/photo-1542362567-b07e543b53da?w=600&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&auto=format&fit=crop&q=80",
   },
   {
     id: "hw-005",
