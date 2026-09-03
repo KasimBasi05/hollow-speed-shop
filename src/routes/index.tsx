@@ -125,41 +125,123 @@ function Featured() {
 }
 
 function ProductGrid() {
+  const [query, setQuery] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
+  const filtered = useMemo(() => {
+    const min = minPrice === "" ? 0 : Number(minPrice);
+    const max = maxPrice === "" ? Infinity : Number(maxPrice);
+    const q = query.trim().toLowerCase();
+
+    return products.filter((product) => {
+      const matchesQuery =
+        q === "" ||
+        product.name.toLowerCase().includes(q) ||
+        product.category.toLowerCase().includes(q);
+      const matchesPrice = product.price >= min && product.price <= max;
+      return matchesQuery && matchesPrice;
+    });
+  }, [query, minPrice, maxPrice]);
+
   return (
     <section id="products" className="mx-auto max-w-7xl scroll-mt-8 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
       <SectionHeading label="The Garage" title="All Cars" />
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => (
-          <article
-            key={product.id}
-            className="glass neon-card group flex flex-col overflow-hidden rounded-2xl p-3 transition-transform duration-300 hover:-translate-y-1.5"
-          >
-            <div className="aspect-[4/3] overflow-hidden rounded-xl bg-muted">
-              <img
-                src={product.image}
-                alt={`${product.name} die-cast car`}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-            </div>
-            <div className="mt-4 flex flex-1 flex-col px-1">
-              <p className="text-[0.65rem] font-bold uppercase tracking-[0.25em] text-secondary">
-                {product.category}
-              </p>
-              <h3 className="font-display mt-1.5 text-lg font-black uppercase leading-tight">
-                {product.name}
-              </h3>
-              <p className="font-display mt-2 text-xl font-black text-primary">
-                ${product.price.toFixed(2)}
-              </p>
-              <button type="button" className="neon-btn mt-4 w-full justify-center text-sm">
-                Buy Now
-              </button>
-            </div>
-          </article>
-        ))}
+      <div className="glass mb-10 rounded-2xl p-4 sm:p-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search cars, categories..."
+              className="w-full rounded-xl border border-border bg-background/60 py-2.5 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              Price
+            </span>
+            <input
+              type="number"
+              min={0}
+              step={0.01}
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              placeholder="Min"
+              className="w-24 rounded-xl border border-border bg-background/60 py-2.5 px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+            <span className="text-muted-foreground">–</span>
+            <input
+              type="number"
+              min={0}
+              step={0.01}
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              placeholder="Max"
+              className="w-24 rounded-xl border border-border bg-background/60 py-2.5 px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+        </div>
+
+        <p className="mt-4 text-xs font-semibold text-muted-foreground">
+          Showing {filtered.length} of {products.length} cars
+        </p>
       </div>
+
+      {filtered.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border py-16 text-center">
+          <p className="font-display text-lg font-bold uppercase text-muted-foreground">
+            No cars match your filters
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setQuery("");
+              setMinPrice("");
+              setMaxPrice("");
+            }}
+            className="neon-btn mt-4 justify-center text-sm"
+          >
+            Clear Filters
+          </button>
+        </div>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filtered.map((product) => (
+            <article
+              key={product.id}
+              className="glass neon-card group flex flex-col overflow-hidden rounded-2xl p-3 transition-transform duration-300 hover:-translate-y-1.5"
+            >
+              <div className="aspect-[4/3] overflow-hidden rounded-xl bg-muted">
+                <img
+                  src={product.image}
+                  alt={`${product.name} die-cast car`}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              <div className="mt-4 flex flex-1 flex-col px-1">
+                <p className="text-[0.65rem] font-bold uppercase tracking-[0.25em] text-secondary">
+                  {product.category}
+                </p>
+                <h3 className="font-display mt-1.5 text-lg font-black uppercase leading-tight">
+                  {product.name}
+                </h3>
+                <p className="font-display mt-2 text-xl font-black text-primary">
+                  ${product.price.toFixed(2)}
+                </p>
+                <button type="button" className="neon-btn mt-4 w-full justify-center text-sm">
+                  Buy Now
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
