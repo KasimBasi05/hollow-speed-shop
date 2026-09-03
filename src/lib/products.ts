@@ -33,7 +33,7 @@ export const products: Product[] = [
     name: "Shadow Runner",
     price: 6.99,
     category: "Exotic",
-    image: "https://images.unsplash.com/photo-1503376763036-066120622c74?w=600&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1542362567-b07e543b53da?w=600&auto=format&fit=crop&q=80",
   },
   {
     id: "hw-005",
@@ -61,6 +61,6 @@ export const products: Product[] = [
     name: "Street Hawk",
     price: 3.49,
     category: "Sports",
-    image: "https://images.unsplash.com/photo-1605559424843-9e4fb4d0f38c?w=600&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1617531653520-4893f7bbf978?w=600&auto=format&fit=crop&q=80",
   },
 ];

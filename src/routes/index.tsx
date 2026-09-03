@@ -49,7 +49,7 @@ function HomePage() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-accent-foreground/20 px-8 text-base font-black text-accent-foreground hover:bg-accent-foreground/10"
+                className="border-white/30 bg-transparent px-8 text-base font-black text-white hover:bg-white/10 hover:text-white"
               >
                 <Link to="/cart">View Cart</Link>
               </Button>
