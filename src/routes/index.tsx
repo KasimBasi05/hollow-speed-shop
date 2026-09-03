@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronDown, Flame, Zap } from "lucide-react";
+import { ChevronDown, Flame, Search, Zap } from "lucide-react";
+import { useMemo, useState } from "react";
 import { products } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
